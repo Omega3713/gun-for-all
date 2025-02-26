@@ -13,6 +13,9 @@ func _ready() -> void:
 	
 	#sharing the same world as subwindow
 	_SubWindow.world_2d = _MainWindow.world_2d
+	
+	# Pass the main window reference to the subwindow
+	_SubWindow.call_deferred("set_main_window", _MainWindow)
 # declare the variables...
 		# Enable per-pixel transparency, required for transparent windows but has a performance cost
 		# Can also break on some systems
@@ -37,4 +40,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	#print("MainWindow position", _MainWindow.position)
+	#print("SubWindow position", _SubWindow.position)
 	pass

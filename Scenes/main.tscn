@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dks68ee40iyxi"]
+[gd_scene load_steps=6 format=3 uid="uid://dks68ee40iyxi"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_vdf81"]
 [ext_resource type="PackedScene" uid="uid://dvoe3gdjr0r1p" path="res://Scenes/level_1.tscn" id="2_tc6fc"]
 [ext_resource type="PackedScene" uid="uid://xd5du21mijsn" path="res://Scenes/main_character.tscn" id="3_ve0f3"]
 [ext_resource type="Script" path="res://Scripts/window.gd" id="4_17ry6"]
+[ext_resource type="PackedScene" uid="uid://bkbsv2ixmbyj2" path="res://Scenes/parallax_background.tscn" id="5_1laca"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_vdf81")
@@ -19,3 +20,5 @@ size = Vector2i(300, 300)
 script = ExtResource("4_17ry6")
 
 [node name="Camera2D" type="Camera2D" parent="Window"]
+
+[node name="ParallaxBackground" parent="Window" instance=ExtResource("5_1laca")]

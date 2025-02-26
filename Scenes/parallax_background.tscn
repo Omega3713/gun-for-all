@@ -171,7 +171,6 @@ texture = ExtResource("2_aeavb")
 sources/0 = SubResource("TileSetAtlasSource_n6rkn")
 
 [node name="ParallaxBackground" type="ParallaxBackground"]
-follow_viewport_enabled = true
 
 [node name="ParallaxLayer4" type="ParallaxLayer" parent="."]
 motion_scale = Vector2(0, 0)

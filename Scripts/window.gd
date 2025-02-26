@@ -3,7 +3,8 @@ extends Window
 var pbg_scene = preload("res://Scenes/parallax_background.tscn")
 @onready var level: Node = $"../Level/Background"
 @onready var window: Window = $"."
-
+var main_window: Window
+@onready var player: Node2D = $"../Player"
 @onready var _Camera: Camera2D = $Camera2D
 
 var last_position: = Vector2i.ZERO
@@ -21,12 +22,36 @@ func _ready() -> void:
 	transient = true # Make the window considered as a child of the main window
 	close_requested.connect(queue_free) # Actually close the window when clicking the close button
 	
+func set_main_window(window_ref: Window) -> void:
+	main_window = window_ref
+	
 func _initialise_background():
 	var instance = pbg_scene.instantiate()
 	instance.custom_viewport = window
+	
+	var main_window_size = main_window.size if main_window else window.size
+	
 	bg = instance.find_child("Background")
 	midbg = instance.find_child("MidFogBg")
 	ftbg = instance.find_child("FrontFogBg")
+	
+	# Ensure background layers are positioned at the main window's top-left
+	if bg:
+		bg.global_position = Vector2.ZERO
+	if midbg:
+		midbg.global_position = Vector2.ZERO
+	if ftbg:
+		ftbg.global_position = Vector2.ZERO
+
+	# Scale the backgrounds to match the main window size
+	#if bg:
+		#Vector2(main_window_size.x / window.size.x, main_window_size.y / window.size.y)
+		#bg.scale = Vector2(1,1)
+	#if midbg:
+		#midbg.scale = Vector2(1920,1080)
+	#if ftbg:
+		#ftbg.scale = Vector2(1920,1080)
+	
 	level.add_child(instance)
 	
 func _update_background() -> void:
@@ -42,6 +67,22 @@ func _process(delta: float) -> void:
 	velocity = position - last_position
 	last_position = position
 	_Camera.position = get_camera_pos_from_window()
+	
+	if bg:
+		bg.global_position = main_window.position
+	if midbg:
+		midbg.global_position = main_window.position
+	if ftbg:
+		ftbg.global_position = main_window.position
+		
+	print("bg position", bg.global_position)
+	
+	follow_player()
 
 func get_camera_pos_from_window()->Vector2i:
 	return position + velocity
+
+func follow_player() -> void:
+	if player:
+		var target_position = player.global_position - Vector2(size.x, size.y) / 2  # Center window on player
+		position = target_position
