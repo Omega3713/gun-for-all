@@ -1,18 +1,43 @@
-[gd_scene load_steps=4 format=3 uid="uid://xd5du21mijsn"]
+[gd_scene load_steps=8 format=3 uid="uid://xd5du21mijsn"]
 
-[ext_resource type="Script" path="res://Scripts/PlayerMovement.gd" id="1_ihwub"]
-[ext_resource type="Texture2D" uid="uid://b2amtwc3flesf" path="res://Assets/icon.svg" id="2_wouxj"]
+[ext_resource type="Script" uid="uid://cuxlddvsnsn4d" path="res://Scripts/Characters/Player/player_main.gd" id="1_ihwub"]
+[ext_resource type="Texture2D" uid="uid://tao3v6spii2o" path="res://Assets/PlatformerAssets/sPlayer.png" id="2_00huo"]
+[ext_resource type="Script" uid="uid://bh8hvrb4i6n4h" path="res://Scripts/Characters/Player/idle_state.gd" id="3_u58ws"]
+[ext_resource type="Script" uid="uid://bq5qdl6jtg6cl" path="res://Scripts/Characters/Player/jumping_state.gd" id="4_uqgpa"]
+[ext_resource type="Script" uid="uid://bpe54cg371wwb" path="res://Scripts/Characters/Player/moving_state.gd" id="5_st4up"]
+[ext_resource type="Texture2D" uid="uid://n2yvyuv1hxgf" path="res://Assets/PlatformerAssets/sGun.png" id="6_23pc5"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wwcbx"]
-size = Vector2(121, 121)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_llawg"]
+radius = 9.0
+height = 51.0
 
-[node name="Player" type="CharacterBody2D"]
-position = Vector2(179, 98)
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_ihwub")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_wouxj")
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+position = Vector2(0, 12)
+texture = ExtResource("2_00huo")
+offset = Vector2(0, -12)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, -0.5)
-shape = SubResource("RectangleShape2D_wwcbx")
+[node name="PlayerCollisionBox" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_llawg")
+
+[node name="IdleState" type="Node" parent="."]
+script = ExtResource("3_u58ws")
+
+[node name="JumpingState" type="Node" parent="."]
+script = ExtResource("4_uqgpa")
+
+[node name="MovingState" type="Node" parent="."]
+script = ExtResource("5_st4up")
+
+[node name="PlayerGun" type="Sprite2D" parent="."]
+position = Vector2(0, 12)
+rotation = 0.00350532
+texture = ExtResource("6_23pc5")
+centered = false
+offset = Vector2(0, -4.5)
+
+[node name="MuzzleMarker" type="Marker2D" parent="PlayerGun"]
+position = Vector2(26.9998, -0.0946426)
+rotation = -0.00350532

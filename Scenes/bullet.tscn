@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=3 uid="uid://qf4scl46pmlr"]
+
+[ext_resource type="Texture2D" uid="uid://brfadg3wg2qhl" path="res://Assets/PlatformerAssets/sBullet_strip2.png" id="1_q7nrx"]
+[ext_resource type="Script" uid="uid://rncehfjnbg5g" path="res://Scripts/Characters/Objects/bullet.gd" id="1_qqbxi"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n757y"]
+
+[sub_resource type="Animation" id="Animation_5kwyo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BulletSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BulletSprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_igcsj"]
+resource_name = "fire"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BulletSprite:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.015),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BulletSprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.015),
+"transitions": PackedFloat32Array(173.689, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-8, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_obbvm"]
+_data = {
+&"RESET": SubResource("Animation_5kwyo"),
+&"fire": SubResource("Animation_igcsj")
+}
+
+[node name="Bullet" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_qqbxi")
+
+[node name="BulletSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_q7nrx")
+hframes = 2
+
+[node name="BulletCollisionBox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_n757y")
+
+[node name="BulletAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_obbvm")
+}
+autoplay = "fire"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

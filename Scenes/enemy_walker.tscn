@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://o50sikyhpr17"]
+
+[ext_resource type="Script" uid="uid://cbghkweo1l8gv" path="res://Scenes/enemy_walker_main.gd" id="1_tpnf6"]
+[ext_resource type="Texture2D" uid="uid://cq8xjfneooopw" path="res://Assets/PlatformerAssets/sEnemy.png" id="2_nmtf5"]
+[ext_resource type="Script" uid="uid://tp7wgrhucsn4" path="res://Scripts/Characters/Enemy/enemy_idle_state.gd" id="3_tpnf6"]
+[ext_resource type="Script" uid="uid://egq8wobxuiw3" path="res://Scripts/Characters/Enemy/enemy_jumping_state.gd" id="4_aft6o"]
+[ext_resource type="Script" uid="uid://nhl7yrjdqb8f" path="res://Scripts/Characters/Enemy/enemy_moving_state.gd" id="5_jn1if"]
+[ext_resource type="Texture2D" uid="uid://n2yvyuv1hxgf" path="res://Assets/PlatformerAssets/sGun.png" id="6_db65c"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_llawg"]
+radius = 9.0
+height = 51.0
+
+[node name="EnemyWalker" type="CharacterBody2D" groups=["enemy"]]
+script = ExtResource("1_tpnf6")
+
+[node name="EnemySprite" type="Sprite2D" parent="."]
+position = Vector2(0, 12)
+texture = ExtResource("2_nmtf5")
+offset = Vector2(0, -12)
+
+[node name="EnemyCollisionBox" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_llawg")
+
+[node name="EnemyIdleState" type="Node" parent="."]
+script = ExtResource("3_tpnf6")
+
+[node name="EnemyJumpingState" type="Node" parent="."]
+script = ExtResource("4_aft6o")
+
+[node name="EnemyMovingState" type="Node" parent="."]
+script = ExtResource("5_jn1if")
+
+[node name="EnemyGun" type="Sprite2D" parent="."]
+position = Vector2(0, 12)
+rotation = 0.00350532
+texture = ExtResource("6_db65c")
+centered = false
+offset = Vector2(0, -4.5)
+
+[node name="MuzzleMarker" type="Marker2D" parent="EnemyGun"]
+position = Vector2(26.9998, -0.0946426)
+rotation = -0.00350532

@@ -1,10 +1,11 @@
 extends Window
 
+
 var pbg_scene = preload("res://Scenes/parallax_background.tscn")
-@onready var level: Node = $"../Level/Background"
+@onready var level: Node = $"/root/Main/Level/Background"
 @onready var window: Window = $"."
-var main_window: Window
-@onready var player: Node2D = $"../Player"
+var main_window: Window = Globals.get_main_window()
+@onready var parent: Node2D
 @onready var _Camera: Camera2D = $Camera2D
 
 var last_position: = Vector2i.ZERO
@@ -13,17 +14,22 @@ var bg: Node
 var midbg: Node
 var ftbg: Node
 
+var windowType: int
+
 func _ready() -> void:
 	# Set the anchor mode to "Fixed top-left"
 	# Easier to work with since it corresponds to the window coordinates
+	
+	main_window = Globals.get_main_window()
+	
 	_Camera.anchor_mode = Camera2D.ANCHOR_MODE_FIXED_TOP_LEFT
 	_initialise_background()
 	
 	transient = true # Make the window considered as a child of the main window
 	close_requested.connect(queue_free) # Actually close the window when clicking the close button
 	
-func set_main_window(window_ref: Window) -> void:
-	main_window = window_ref
+#func set_main_window(window_ref: Window) -> void:
+	#main_window = window_ref
 	
 func _initialise_background():
 	var instance = pbg_scene.instantiate()
@@ -75,14 +81,17 @@ func _process(delta: float) -> void:
 	if ftbg:
 		ftbg.global_position = main_window.position
 		
-	print("bg position", bg.global_position)
-	
-	follow_player()
+	#print("bg position", bg.global_position)
+	if windowType == 0:
+		follow_parent()
 
 func get_camera_pos_from_window()->Vector2i:
 	return position + velocity
 
-func follow_player() -> void:
-	if player:
-		var target_position = player.global_position - Vector2(size.x, size.y) / 2  # Center window on player
+func follow_parent() -> void:
+	if parent:
+		var target_position = parent.global_position - Vector2(size.x, size.y) / 2  # Center window on parent
 		position = target_position
+		
+func set_parent(p: Node2D):
+	parent = p
