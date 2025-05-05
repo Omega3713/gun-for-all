@@ -9,7 +9,16 @@ const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 var last_facing_direction = 1
 @export var max_health: int = 100
+@export var invincibility_time: float = 1.0
 var health: int = max_health
+var is_invincible: bool = false
+var invincibility_timer: float = 0.0
+var spawn_immunity_timer: float = 0.5
+var coyote_time := 0.1 # seconds (how long after falling you can still jump)
+var coyote_timer := 0.0
+var jump_buffer_time := 0.15 # seconds (how early you can press jump before landing)
+var jump_buffer_timer := 0.0
+var friction_amount := 1500.0  # Tune this
 
 #Gun Variables
 @export var fire_rate: float = 0.2  # Time between shots
@@ -26,10 +35,15 @@ var health_label = null
 
 #State variables
 var current_state
-@onready var player_sprite: Sprite2D = $PlayerSprite
+@onready var player_sprite: AnimatedSprite2D = $PlayerSprite
 @onready var gun_sprite: Sprite2D = $PlayerGun
 
 func _physics_process(delta: float) -> void:
+	if is_invincible:
+		invincibility_timer -= delta
+		if invincibility_timer <= 0.0:
+			is_invincible = false
+			
 	var direction := Input.get_axis("ui_left", "ui_right")
 	
 	if direction != 0:
@@ -38,6 +52,10 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		
+	if is_on_floor() and abs(velocity.x) > 0:
+		# Apply friction / stop sliding
+		velocity.x = move_toward(velocity.x, 0, friction_amount * delta)
 		
 	if current_state:
 		current_state.handle_input(delta)
@@ -55,17 +73,26 @@ func _physics_process(delta: float) -> void:
 	gun_sprite.set_flip_v(wrapf(gun_sprite.rotation_degrees, -90, -90 + 360) > -90 + 180)
 	
 func _process(delta):
+	if spawn_immunity_timer > 0:
+		spawn_immunity_timer -= delta
+	
 	if Input.is_action_just_pressed("fire") and can_shoot:
 		shoot()
 		can_shoot = false
 		await get_tree().create_timer(fire_rate).timeout  # Delay next shot
 		can_shoot = true
 		
+	if Input.is_action_just_pressed("ui_cancel"):
+		_on_close_requested()
+		
 
 
 func _ready() -> void:
 	_MainWindow = Globals.get_main_window()
 	_PlayerWindow = preWindow.instantiate()
+	
+	health = Globals.player_health
+	max_health = Globals.player_max_health  # Optional if you want
 	
 	if _MainWindow == null:
 		print("ERROR: Failed to instantiate _MainWindow")
@@ -96,13 +123,10 @@ func _ready() -> void:
 		DisplayServer.window_set_transient(player_window_id, -1)  # Remove transient status
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_ALWAYS_ON_TOP, true, player_window_id)
 	
-	for node in _PlayerWindow.get_node("UI").get_children():
-		print("UI child: ", node.name," ", "Type: ", node.get_class())
 
 	while not _PlayerWindow.has_node("UI/PlayerHealthLabel"):
 		await get_tree().process_frame
 	
-	print("a")
 	health_label = _PlayerWindow.get_node("UI/PlayerHealthLabel")
 	print(health_label)
 	health_label.visible = true
@@ -123,31 +147,47 @@ func shoot():
 		DisplayServer.window_move_to_foreground(player_window_id)
 	var bullet = preBullet.instantiate()  # Create bullet instance
 	bullet.shooter = self
+	bullet.damage += Globals.player_damage_boost
 	bullet.global_position = muzzle.global_position  # Set start position
 	bullet.direction = (get_global_mouse_position() - muzzle.global_position).normalized()  # Get direction
 	get_parent().add_child(bullet)  # Add bullet to scene
 
-
+func flash():
+	modulate = Color(1, 0.5, 0.5)  # Light red
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color(1, 1, 1)  # Normal again
 	
 func take_damage(amount: int):
+	if is_invincible or spawn_immunity_timer > 0:
+		return  # Ignore damage if invincible
+
 	health -= amount
+	Globals.player_health = health
+	print("Player health: ", health)
+	flash()
+
+	is_invincible = true
+	invincibility_timer = invincibility_time
+	
 	update_health_ui()
-
-	print("Player Health: ", health)
-
+	
 	if health <= 0:
 		die()
+		
+func apply_knockback(force: Vector2):
+	velocity += force 
+	
+func heal(amount: int) -> void:
+	health = min(health + amount, max_health)
+	Globals.player_health = health
 
 func die():
-	print("Player has died")
-	queue_free()
+	get_node("/root/Main").game_over()
 	
 func update_health_ui():
 	if health_label:
 		var percent := int(health * 100 / max_health)
 		health_label.text = "HP: %d/%d (%d%%)" % [health, max_health, percent]
-
-
 
 	
 func _on_close_requested():
@@ -157,7 +197,9 @@ func _on_close_requested():
 		player_window_id = -1
 
 		# Tell the main scene to quit after one frame
-		await get_tree().process_frame
+		if get_tree():
+			await get_tree().process_frame
+		
 		Globals.emit_signal("player_window_closed")
 
 	

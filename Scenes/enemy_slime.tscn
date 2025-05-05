@@ -1,0 +1,139 @@
+[gd_scene load_steps=21 format=3 uid="uid://dj7t44ugvgjq5"]
+
+[ext_resource type="Script" uid="uid://cxdtq0e7kh4uu" path="res://Scripts/Characters/Enemy/EnemySlime/slime_main.gd" id="1_15b1g"]
+[ext_resource type="Texture2D" uid="uid://fmabypclbtgr" path="res://Assets/EnemySlimeAssets/green-slime-spritesheet.png" id="2_6vs72"]
+[ext_resource type="Script" uid="uid://dbqkifqjjky6" path="res://Scripts/Characters/Enemy/EnemySlime/slime_idle_state.gd" id="3_ujbpm"]
+[ext_resource type="Script" uid="uid://bvw0xolapb4ma" path="res://Scripts/Characters/Enemy/EnemySlime/slime_chase_state.gd" id="4_wcc33"]
+[ext_resource type="Script" uid="uid://srsi4qa8pqrl" path="res://Scripts/Characters/Enemy/EnemySlime/slime_navigator.gd" id="5_wcc33"]
+[ext_resource type="Script" uid="uid://d2yukufjt6637" path="res://Scripts/Characters/Enemy/EnemySlime/slime_patrol_state.gd" id="6_w4tc1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w4tc1"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elp3u"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ka1in"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(32, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sqccn"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(48, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dnfxt"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(64, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kxe7n"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(80, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_05hf0"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(96, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kt5pi"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(112, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lllk"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(128, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hw4d8"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(144, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_72xbl"]
+atlas = ExtResource("2_6vs72")
+region = Rect2(160, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ka1in"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w4tc1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elp3u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ka1in")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sqccn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dnfxt")
+}],
+"loop": false,
+"name": &"idlewalk",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kxe7n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_05hf0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kt5pi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6lllk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hw4d8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_72xbl")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w4tc1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d60d5"]
+size = Vector2(25, 25)
+
+[node name="EnemySlime" type="CharacterBody2D" groups=["enemy"]]
+script = ExtResource("1_15b1g")
+
+[node name="SlimeSprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_ka1in")
+animation = &"idlewalk"
+offset = Vector2(0, -6)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1.5, 1.5)
+shape = SubResource("RectangleShape2D_w4tc1")
+
+[node name="SlimeHurtbox" type="Area2D" parent="."]
+
+[node name="SlimeHurtboxShape" type="CollisionShape2D" parent="SlimeHurtbox"]
+position = Vector2(0, -1)
+scale = Vector2(1.5, 1.5)
+shape = SubResource("RectangleShape2D_d60d5")
+
+[node name="SlimeIdleState" type="Node" parent="."]
+script = ExtResource("3_ujbpm")
+metadata/_custom_type_script = "uid://dbqkifqjjky6"
+
+[node name="SlimeChaseState" type="Node" parent="."]
+script = ExtResource("4_wcc33")
+metadata/_custom_type_script = "uid://bvw0xolapb4ma"
+
+[node name="SlimeNavigator" type="Node" parent="."]
+script = ExtResource("5_wcc33")
+metadata/_custom_type_script = "uid://srsi4qa8pqrl"
+
+[node name="SlimePatrolState" type="Node" parent="."]
+script = ExtResource("6_w4tc1")
+metadata/_custom_type_script = "uid://d2yukufjt6637"

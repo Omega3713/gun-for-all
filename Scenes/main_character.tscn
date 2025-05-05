@@ -1,11 +1,80 @@
-[gd_scene load_steps=8 format=3 uid="uid://xd5du21mijsn"]
+[gd_scene load_steps=18 format=3 uid="uid://xd5du21mijsn"]
 
 [ext_resource type="Script" uid="uid://cuxlddvsnsn4d" path="res://Scripts/Characters/Player/player_main.gd" id="1_ihwub"]
 [ext_resource type="Texture2D" uid="uid://tao3v6spii2o" path="res://Assets/PlatformerAssets/sPlayer.png" id="2_00huo"]
+[ext_resource type="Texture2D" uid="uid://be6nlix86ne56" path="res://Assets/PlatformerAssets/sPlayer_a_strip2.png" id="3_1fj1i"]
 [ext_resource type="Script" uid="uid://bh8hvrb4i6n4h" path="res://Scripts/Characters/Player/idle_state.gd" id="3_u58ws"]
+[ext_resource type="Texture2D" uid="uid://di8k5a84g23gx" path="res://Assets/PlatformerAssets/sPlayer_r_strip4.png" id="4_024ki"]
 [ext_resource type="Script" uid="uid://bq5qdl6jtg6cl" path="res://Scripts/Characters/Player/jumping_state.gd" id="4_uqgpa"]
 [ext_resource type="Script" uid="uid://bpe54cg371wwb" path="res://Scripts/Characters/Player/moving_state.gd" id="5_st4up"]
 [ext_resource type="Texture2D" uid="uid://n2yvyuv1hxgf" path="res://Assets/PlatformerAssets/sGun.png" id="6_23pc5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_esnnb"]
+atlas = ExtResource("2_00huo")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2o0tg"]
+atlas = ExtResource("3_1fj1i")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_umvch"]
+atlas = ExtResource("3_1fj1i")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5av31"]
+atlas = ExtResource("4_024ki")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vvc7"]
+atlas = ExtResource("4_024ki")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ic4x"]
+atlas = ExtResource("4_024ki")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hajwg"]
+atlas = ExtResource("4_024ki")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7eqbn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_esnnb")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2o0tg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_umvch")
+}],
+"loop": false,
+"name": &"jumping",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5av31")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vvc7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ic4x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hajwg")
+}],
+"loop": true,
+"name": &"running",
+"speed": 15.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_llawg"]
 radius = 9.0
@@ -14,9 +83,10 @@ height = 51.0
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_ihwub")
 
-[node name="PlayerSprite" type="Sprite2D" parent="."]
+[node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 12)
-texture = ExtResource("2_00huo")
+sprite_frames = SubResource("SpriteFrames_7eqbn")
+animation = &"idle"
 offset = Vector2(0, -12)
 
 [node name="PlayerCollisionBox" type="CollisionShape2D" parent="."]

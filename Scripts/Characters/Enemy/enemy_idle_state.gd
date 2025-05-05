@@ -1,41 +1,35 @@
 extends EnemyState
+class_name EnemyIdleState
 
-@export var shoot_range: float = 300.0
-var shoot_cooldown := 0.0
-var distance := 0.0
+var wait_timer: float = 0.0
+var timer: float = 0.0
 
 func enter_state(enemy_node):
-	super.enter_state(enemy_node)
-	shoot_cooldown = 0.0
+	super(enemy_node)
+	enemy.velocity.x = 0  # Stop completely
+	timer = 0.0
+	wait_timer = randf_range(0.5, 1.5)  # Randomized idle time
+	enemy.enemy_sprite.play("idle")
+
+func exit_state():
+	pass
+
+func handle_input(delta):
+	timer += delta
+
+	if timer >= wait_timer:
+		if enemy.navigator:
+			enemy.navigator.pick_next_target()
+
+			# Only move if a valid target was picked
+			if enemy.navigator.target_navpoint:
+				enemy.change_state("EnemyMovingState")
+			else:
+				# No target? Remain idle and reset timer
+				timer = 0.0
+				wait_timer = randf_range(0.5, 1.5)
 
 func physics_update(delta):
-	shoot_cooldown -= delta
-
-	# Gravity
-	var velocity = enemy.velocity
+	# If enemy falls off something, transition to jump/fall handling
 	if not enemy.is_on_floor():
-		velocity.y += enemy.get_gravity().y * delta
-	else:
-		velocity.y = 0
-	enemy.velocity = velocity
-	enemy.move_and_slide()
-
-	# State logic
-	enemy.update_facing_direction()
-	if is_instance_valid(enemy.player):
-		distance = enemy.global_position.distance_to(enemy.player.global_position)
-		#print("this is distance:",distance)
-	
-	#print("distance to player:", distance)
-
-	if enemy.player and distance < shoot_range and shoot_cooldown <= 0:
-		#print("PLAYER IN RANGE, SHOOTING")
-		enemy.shoot()
-		shoot_cooldown = 1.0
-
-	if enemy.should_jump():
-		#print("JUMPING")
 		enemy.change_state("EnemyJumpingState")
-	elif distance > 500:
-		#print("PLAYER TOO FAR, MOVING")
-		enemy.change_state("EnemyMovingState")
