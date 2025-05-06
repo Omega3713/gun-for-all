@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://bfht1yfmkdh50"]
+
+[ext_resource type="TileSet" uid="uid://b8iq2huc68w8c" path="res://Assets/TileSets/terrain.tres" id="1_75qo2"]
+[ext_resource type="Script" uid="uid://yuputymexety" path="res://Scripts/template_room.gd" id="1_atkrr"]
+[ext_resource type="TileSet" uid="uid://cukmj0qdjh21l" path="res://Assets/TileSets/buildings.tres" id="3_4nuck"]
+[ext_resource type="TileSet" uid="uid://btnr8sn1hb7rq" path="res://Assets/TileSets/props.tres" id="4_1cbbi"]
+
+[node name="TemplateRoom" type="Node2D"]
+script = ExtResource("1_atkrr")
+background_group_path = NodePath("BackgroundGroup")
+foreground_group_path = NodePath("ForegroundGroup")
+
+[node name="BackgroundGroup" type="Node2D" parent="."]
+
+[node name="InvisibleWallLayer" type="TileMapLayer" parent="BackgroundGroup"]
+tile_set = ExtResource("1_75qo2")
+
+[node name="BuildingLayer" type="TileMapLayer" parent="BackgroundGroup"]
+tile_set = ExtResource("3_4nuck")
+
+[node name="DetailLayer" type="TileMapLayer" parent="BackgroundGroup"]
+tile_set = ExtResource("3_4nuck")
+
+[node name="BackgroundPropsLayer" type="TileMapLayer" parent="BackgroundGroup"]
+tile_set = ExtResource("4_1cbbi")
+
+[node name="TerrainLayer" type="TileMapLayer" parent="BackgroundGroup"]
+tile_set = ExtResource("1_75qo2")
+
+[node name="ForegroundGroup" type="Node2D" parent="."]
+
+[node name="ForegroundPropsLayer" type="TileMapLayer" parent="ForegroundGroup"]
+tile_set = ExtResource("4_1cbbi")
+
+[node name="Markers" type="Node2D" parent="."]
+
+[node name="EntrancePoints" type="Node2D" parent="Markers"]
+
+[node name="EntranceLeft" type="Marker2D" parent="Markers/EntrancePoints"]
+position = Vector2(0, 135)
+
+[node name="EntranceRight" type="Marker2D" parent="Markers/EntrancePoints"]
+position = Vector2(240, 135)
+
+[node name="EntranceTop" type="Marker2D" parent="Markers/EntrancePoints"]
+position = Vector2(120, 0)
+
+[node name="EntranceBottom" type="Marker2D" parent="Markers/EntrancePoints"]
+position = Vector2(120, 270)
+
+[node name="SpawnPoints" type="Node2D" parent="Markers"]
+
+[node name="NavigationPoints" type="Node2D" parent="Markers"]

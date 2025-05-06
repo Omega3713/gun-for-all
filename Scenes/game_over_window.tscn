@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://b0absakaa40hr"]
+
+[ext_resource type="Script" uid="uid://b0f3axqhy4j7t" path="res://Scenes/game_over_window.gd" id="1_jcb1m"]
+[ext_resource type="LabelSettings" uid="uid://cq50hph2wufjt" path="res://Scenes/Font Settings/menu_window.tres" id="2_en71h"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_32xbo"]
+
+[node name="GameOverWindow" type="Window"]
+position = Vector2i(0, 36)
+size = Vector2i(400, 300)
+script = ExtResource("1_jcb1m")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(400, 300)
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_32xbo")
+horizontal_alignment = 1
+
+[node name="RoundLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+label_settings = ExtResource("2_en71h")
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="RestartButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2

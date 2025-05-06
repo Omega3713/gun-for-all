@@ -1,0 +1,6 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://cq50hph2wufjt"]
+
+[ext_resource type="FontFile" uid="uid://drmpax2u34sme" path="res://Assets/Fonts/joystix/joystix monospace.otf" id="1_a5nhb"]
+
+[resource]
+font = ExtResource("1_a5nhb")

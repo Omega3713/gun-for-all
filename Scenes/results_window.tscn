@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://8crl0ol301s6"]
+
+[ext_resource type="LabelSettings" uid="uid://cq50hph2wufjt" path="res://Scenes/Font Settings/menu_window.tres" id="2_46xvd"]
+[ext_resource type="Script" uid="uid://cu076ftykb6aw" path="res://Scripts/results_window.gd" id="2_goyd4"]
+
+[node name="ResultsWindow" type="Window"]
+size = Vector2i(600, 500)
+unresizable = true
+script = ExtResource("2_goyd4")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+label_settings = ExtResource("2_46xvd")
+
+[node name="SlimeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+label_settings = ExtResource("2_46xvd")
+
+[node name="BossLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+label_settings = ExtResource("2_46xvd")
+
+[node name="TimeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+label_settings = ExtResource("2_46xvd")
+
+[node name="PointsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+label_settings = ExtResource("2_46xvd")
+
+[node name="TotalPointsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+label_settings = ExtResource("2_46xvd")
+
+[node name="ShopContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HealButton" type="Button" parent="MarginContainer/VBoxContainer/ShopContainer"]
+process_mode = 3
+layout_mode = 2
+
+[node name="DamageButton" type="Button" parent="MarginContainer/VBoxContainer/ShopContainer"]
+process_mode = 3
+layout_mode = 2
+
+[node name="MaxHPButton" type="Button" parent="MarginContainer/VBoxContainer/ShopContainer"]
+process_mode = 3
+layout_mode = 2
+
+[node name="ContinueButton" type="Button" parent="MarginContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+text = "Continue"

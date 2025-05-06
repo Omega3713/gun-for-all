@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bs8gru0xr8jyy"]
+[gd_scene load_steps=4 format=3 uid="uid://bs8gru0xr8jyy"]
 
 [ext_resource type="Script" uid="uid://1btqymm07j66" path="res://Scripts/window.gd" id="1_o3xqh"]
 [ext_resource type="PackedScene" uid="uid://bkbsv2ixmbyj2" path="res://Scenes/parallax_background.tscn" id="2_252i6"]
+[ext_resource type="LabelSettings" uid="uid://cq50hph2wufjt" path="res://Scenes/Font Settings/menu_window.tres" id="3_30sqi"]
 
 [node name="Window" type="Window"]
 auto_translate_mode = 1
@@ -22,3 +23,4 @@ offset_top = 10.0
 offset_right = 50.0
 offset_bottom = 33.0
 text = "Health --"
+label_settings = ExtResource("3_30sqi")

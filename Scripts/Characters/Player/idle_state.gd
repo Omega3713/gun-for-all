@@ -5,6 +5,7 @@ func enter_state(char_node):
 	char.velocity.x = 0
 	
 func handle_input(_delta):
+	char.player_sprite.play("idle")
 	if Input.is_action_just_pressed("ui_accept") and char.is_on_floor():
 		char.change_state("JumpingState")
 		
