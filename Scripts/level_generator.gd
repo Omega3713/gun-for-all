@@ -109,14 +109,12 @@ func generate_level():
 		var move = possible_moves.pick_random()
 		var next_pos = current_pos + move
 
-		print("m, room type: ", current_pos.x," ",current_pos.y)
 		if move == Vector2i(0, 1):
 			grid[current_pos.y][current_pos.x] = RoomType.VERTICAL if last_move_down else RoomType.LRB
 			last_move_down = true
 		else:
 			grid[current_pos.y][current_pos.x] = RoomType.LRT if last_move_down else RoomType.HORIZONTAL
 			last_move_down = false
-		print("m, new room type: ", grid[current_pos.y][current_pos.x])
 
 		current_pos = next_pos
 		visited[current_pos] = true
@@ -158,9 +156,6 @@ func try_branch_from(start_pos: Vector2i):
 	var prev_dir = null
 	var first_step = true
 	
-	print("branching")
-	print("branch start pos: ", start_pos)
-	print("branch length: ",branch_length)
 	for i in range(branch_length):
 		directions.clear()
 		
@@ -184,13 +179,11 @@ func try_branch_from(start_pos: Vector2i):
 		dir = directions.pick_random()
 		var next_pos = pos + dir
 
-		print("next_pos: ", next_pos)
 		# Prevent branch from moving downward into the bottom layer
 		#if dir == Vector2i(0, 1) and pos.y >= grid_height - 2:
 		#	break
 
 		# Check validity
-		print("valid? not visited? ", is_valid_position(next_pos), " ",not visited.has(next_pos))
 		if is_valid_position(next_pos) and not visited.has(next_pos):
 			if first_step:
 				branch_starts[next_pos] = true
@@ -203,12 +196,6 @@ func try_branch_from(start_pos: Vector2i):
 				elif grid[pos.y][pos.x] == RoomType.LRT:
 					grid[pos.y][pos.x] = RoomType.ARENA
 				elif grid[pos.y][pos.x] == null:
-					print(prev_dir)
-					print(Vector2i(1,0))
-					print(Vector2i(-1,0))
-					print((prev_dir != Vector2i(1, 0)))
-					print((prev_dir != Vector2i(-1, 0)))
-					print((prev_dir != Vector2i(1, 0)) or (prev_dir != Vector2i(-1, 0)))
 					if (prev_dir != Vector2i(1, 0)) and (prev_dir != Vector2i(-1, 0)):
 						grid[pos.y][pos.x] = RoomType.VERTICAL
 					else:
@@ -221,7 +208,6 @@ func try_branch_from(start_pos: Vector2i):
 						grid[pos.y][pos.x] = RoomType.HORIZONTAL
 					else:
 						grid[pos.y][pos.x] = RoomType.LRT
-			print("new room type: ",pos.x, " ",pos.y, " -- ",grid[pos.y][pos.x])
 
 			visited[pos] = true
 			pos = next_pos
@@ -264,14 +250,6 @@ func fix_room_types():
 				if main_path.has(neighbor) or branch_starts.has(neighbor):
 					has_down = true
 					
-			print("branches: ",branch_starts)
-			print("room type: ", grid[y][x])
-			print("pos: ",x," ",y)
-			print("has left: ", has_left)
-			print("has right: ", has_right)
-			print("has up: ", has_up)
-			print("has down: ", has_down)
-
 			# Set room type based on neighbor structure
 			if (has_up and has_down) and (has_left or has_right):
 				grid[y][x] = RoomType.ARENA

@@ -189,6 +189,8 @@ func game_over() -> void:
 	game_over_screen.restart_requested.connect(func():
 		print("Restart requested from Game Over screen")
 		Globals.reset_game_state()
+		if level_gen:
+			level_gen.queue_free()
 		get_tree().paused = false
 		start_game()
 	)

@@ -6,7 +6,6 @@ var pbg_scene = preload("res://Scenes/parallax_background.tscn")
 @onready var window: Window = $"."
 @onready var _Camera: Camera2D = $Camera2D
 
-var main_window: Window = Globals.get_main_window()
 var parent: Node2D = null
 
 var last_position: Vector2i = Vector2i.ZERO
@@ -16,6 +15,7 @@ var bg: Node
 var midbg: Node
 var ftbg: Node
 
+var main_window: Window = Globals.get_main_window()
 var windowType: int = 0  # 0 = follow parent, 1 = stationary
 
 func _ready() -> void:
@@ -27,12 +27,6 @@ func _ready() -> void:
 	
 	_initialise_background()
 
-	# Only close manually if allowed
-	"""close_requested.connect(func():
-		if windowType == 0:
-			queue_free()
-		# If windowType == 1 (like result window), do nothing on close button
-	)"""
 
 func _initialise_background():
 	var instance = pbg_scene.instantiate()
